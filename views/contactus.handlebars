@@ -1,0 +1,67 @@
+
+<div class="container">
+  {{#if messages.success}}
+  <div class="feature_divider"></div>
+  <div class="flash pill pill-text" id="SuccessAlert">
+  {{messages.success}}
+  </div>
+
+  {{/if}}
+<h1 style="font-weight: bold;">Contact Us</h1>
+<div class ="divider"></div>
+<div class="feature_divider"></div>
+<p>Got a question for us? We're happy to answer. Fill out the form and we'll get back to you as soon as we can.</p>
+<form class="needs-validation" action="/ContactUs" method="post" novalidate>
+  <div class="form-group">
+    <label for="ContactName">Name</label>
+    <input type="text" class="form-control" id="ContactName" name="ContactName" placeholder="Full Name" required>
+    <div class="invalid-feedback">
+        Please provide a name.
+      </div>
+  </div>
+  <div class="form-group">
+   <label for="ContactEmail">Email</label>
+   <input type="email" class="form-control" id="ContactEmail" name="ContactEmail" placeholder="Email Address" required>
+   <div class="invalid-feedback">
+       Please provide an email.
+     </div>
+ </div>
+ <div class="form-group">
+    <label for="Message">Message</label>
+    <textarea class="form-control" id="Message" name="Message" rows="3" required></textarea>
+    <div class="invalid-feedback">
+        Please provide a message.
+      </div>
+  </div>
+  <button class="btn btn-secondary" type="submit" class="btn btn-primary">Send Message</button>
+  <div class="feature_divider"></div>
+</form>
+<p><strong style="color:black">Facebook: </strong> <a href="https://www.facebook.com/thomlittlewoods/">@TLBowls </a></p>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function(event) {
+  setTimeout(function(){
+    var updateAlert = document.getElementById("SuccessAlert");
+    updateAlert.style.display = "none";
+  }, 5000);
+ });
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>
