@@ -1,5 +1,5 @@
 {
-  "name": "LORE Bets",
+  "name": "LOREBets",
   "version": "1.0.0",
   "description": "Betting site for CS340",
   "main": "server.js",
