@@ -1,9 +1,9 @@
 <!doctype html>
 <html>
 <head>
-	<title>TL Bowls</title>
+	<title>Nymph</title>
 </head>
-<body>
+<body class="sign-in-background">
 
 <link rel="stylesheet" href="/css/bootstrap.min.css">
 <link rel="shortcut icon" href="">
@@ -33,20 +33,23 @@
 			</li>
     </ul>
 		<ul class="nav navbar-nav flex-fill justify-content-center d-sm-none d-md-block">
-			<li class="nav-item">
-					<a class="nav-link navbar-brand logo strike" href="/">TLBOWLS</a>
-			</li>
+
 		</ul>
-		<ul class="nav navbar-nav flex-fill w-100 justify-content-end">
-			<li>
-				<a class="nav-link fa fa-facebook-square" href="https://www.facebook.com/thomlittlewoods/" style="font-size:36px"></a>
-			</li>
-		</ul>
+
   </div>
 </nav>
 	{{{body}}}
 
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script>
+jQuery.fn.exists = function(){ return this.length > 0; }
+$(document).ready(function(){
+if(!($("#signinPage").exists()))
+
+	$("body").removeClass("sign-in-background");
+});
+</script>
+
 </body>
 </html>
