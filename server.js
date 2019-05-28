@@ -3,16 +3,16 @@ var express = require('express');
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
 var bodyParser = require('body-parser');
-var flash = require('express-flash');
-var cookieParser = require('cookie-parser');
+//var flash = require('express-flash');
+//var cookieParser = require('cookie-parser');
 var session = require('express-session');
-var validator = require('express-validator');
+//var validator = require('express-validator');
 
   var path = require('path');
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+//app.use(bodyParser.json());
 app.use(session({secret:'SuperSecretPassword'}));
-  app.use(flash());
+//  app.use(flash());
 
 
 // prepare server
