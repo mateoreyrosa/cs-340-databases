@@ -264,8 +264,8 @@ app.get('/PendingAdminRequests',function(req,res){
 });
 
 app.post('/saveBetDraft', function(req, res){
-  
-}
+
+});
 app.post('/CreateBet',function(req,res){
  res.render('createBet');
 });
