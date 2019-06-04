@@ -18,7 +18,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 600000
+        expires: 600
     }
 }));
   var mysql = require('mysql');
@@ -117,7 +117,7 @@ error = {error: "number of rows was not 1" }
 
 }else{
 
-req.session.username = result[0].username;
+req.session.user = { "username": result[0].username, "type":"admin" };
 }
 console.log(error);
   });
@@ -183,7 +183,7 @@ error = {error: "number of rows was not 1" }
 
 }else{
 
-req.session.username = result[0].username;
+req.session.user = { "username": result[0].username, "type":"user" };
 }
 console.log(error);
   });
@@ -256,6 +256,22 @@ app.get('/ContactUs',function(req,res){
 });
 
 
+app.post('/approveSingleAdmin',function(req,res){
+ res.render('pendingAdminRequests');
+});
+app.get('/PendingAdminRequests',function(req,res){
+ res.render('pendingAdminRequests');
+});
+
+app.post('/saveBetDraft', function(req, res){
+  
+}
+app.post('/CreateBet',function(req,res){
+ res.render('createBet');
+});
+app.get('/CreateBet',function(req,res){
+ res.render('createBet');
+});
 
 app.get('/About',function(req,res){
  res.render('about');
