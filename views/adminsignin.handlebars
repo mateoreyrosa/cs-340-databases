@@ -1,0 +1,86 @@
+<div class="container" id="signinPage">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      {{#if messages.success}}
+      <div class="feature_divider"></div>
+      <div class="flash pill pill-text" id="SuccessAlert">
+      {{messages.success}}
+      </div>
+      {{/if}}
+      {{#if messages.danger}}
+      <div class="feature_divider"></div>
+      <div class="flash pill pill-text" id="FailAlert">
+      {{messages.danger}}
+      </div>
+      {{/if}}
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Admin Sign In</h5>
+          <form class="form-signin needs-validation" action="/AdminSignIn" method="post" novalidate>
+            <div class="form-label-group">
+              <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
+              <label for="inputUsername">Username</label>
+            </div>
+
+            <div class="form-label-group">
+              <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+              <label for="inputPassword">Password</label>
+            </div>
+
+            <div class="custom-control custom-checkbox mb-3">
+              <input type="checkbox" class="custom-control-input" id="customCheck1">
+              <label class="custom-control-label" for="customCheck1">Remember password</label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+            <hr class="my-4">
+
+          </form>
+          <div class="d-flex justify-content-center links">
+            Don't have an account? <a href="/AdminSignUp"> Sign Up</a>
+          </div>
+          <div class="d-flex justify-content-center">
+            <a href="#">Forgot your password?</a>
+
+        </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  setTimeout(function(){
+    var updateAlert = document.getElementById("SuccessAlert");
+    updateAlert.style.display = "none";
+  }, 5000);
+  setTimeout(function(){
+    var updateAlert = document.getElementById("FailAlert");
+    updateAlert.style.display = "none";
+  }, 5000);
+ });
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    var forms = document.getElementsByClassName('needs-validation');
+    // Loop over them and prevent submission
+    var validation = Array.prototype.filter.call(forms, function(form) {
+      form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+      }, false);
+    });
+  }, false);
+})();
+</script>

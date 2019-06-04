@@ -106,3 +106,37 @@ body {
 .links a{
 margin-left: 4px;
 }
+.divider {
+  height: 1px;
+  width:100%;
+  /*display:block; /* for use on default inline elements like span */
+  margin: 9px 0;
+  overflow: hidden;
+  background-color: #e5e5e5;
+}
+
+.pill {
+    width: 40%;
+    margin: auto;
+    background-image: linear-gradient(rgb(133, 134, 140),rgb(133, 134, 140));
+        min-width: 220px;
+    border-radius: 30px !important;
+    height: 45px !important;
+    z-index: 9999;
+    padding-top: 9px;
+}
+.pill-text{
+  z-index: inherit;
+  color:white;
+      white-space: nowrap;
+  text-align: center;
+    font: normal 15px / 27px "Roboto", Helvetica, Arial, Verdana, sans-serif;
+}
+@media only screen and (max-width: 1000px) {
+  .pill{
+    width: 70% !important;
+  }
+  }
+  #map {
+   height: 100%;
+ }

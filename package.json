@@ -5,12 +5,11 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "dev": "nodemon server.js",
- "forever-start": "forever start --append --uid bet-site server.js",
-  "forever-list" : "forever list",
-  "forever-stop" : "forever stop bet-site",
-  "start"        : "nodemon server.js"
+    "forever-start": "forever start --append --uid bet-site server.js",
+    "forever-list": "forever list",
+    "forever-stop": "forever stop bet-site"
   },
   "repository": {
     "type": "git",
@@ -19,16 +18,20 @@
   "author": "Mateo Rey-Rosa Arthur York  <reyrosam@oregonstate.edu>",
   "homepage": "flip",
   "dependencies": {
-    "express": "^4.16.4",
-     "jquery": "^3.4.1",
-	"bootstrap": "^4.3.1",
-	"popper.js":"^1.14.7",
-	"express": "^4.17.1",
-	"handlebars": "^4.1.2",
-	"express-handlebars": "^2.0.1",
-	 "express-session": "^1.11.3",
+    "body-parser": "^1.13.3",
+    "bootstrap": "^4.3.1",
+    "connect-redis": "^3.4.1",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.17.1",
+    "express-flash": "0.0.2",
+    "express-handlebars": "^2.0.1",
+    "express-session": "^1.11.3",
+    "handlebars": "^4.1.2",
+    "jquery": "^3.4.1",
+    "morgan": "^1.9.1",
     "mysql": "^2.8.0",
-"body-parser": "^1.13.3"
+    "popper.js": "^1.14.7",
+    "redis": "^2.8.0"
   },
   "devDependencies": {
     "nodemon": "^1.19.0"
