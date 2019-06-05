@@ -25,9 +25,9 @@ app.use(session({
   var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'classmysql.engr.oregonstate.edu',
-    user            : 'cs340_reyrosam',
-    password        : '6249',
-    database        : 'cs340_reyrosam',
+    user            : 'cs340_yorkar',
+    password        : '7281',
+    database        : 'cs340_yorkar',
     "dateStrings": true
   });
 // prepare server
@@ -43,10 +43,13 @@ app.use(cookieParser());
 app.set('view engine', 'handlebars');
 app.set('port', 3881);
 /*Table names*/
-var admin_table = "dsfsd";
-var user_table = "fds";
+var admin_table = "Admins";
+var user_table = "Users";
 var admin_request = "shrimp";
-var contact_table = "dasdsa";
+var contact_table = "Contacts";
+var bets_table = "Bets";
+var playsin_table = "PlaysIn";
+var games_table = "Games";
 
 app.use(flash());
 app.use((req, res, next) => {
