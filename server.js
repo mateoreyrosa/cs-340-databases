@@ -231,6 +231,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/ContactUs', function(req, res){
+  var error = {};
   var context = {};
   context.ContactName = req.body.ContactName;
   context.ContactEmail = req.body.ContactEmail;
