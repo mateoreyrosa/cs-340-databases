@@ -82,7 +82,7 @@ app.post('/AdminSignUp', function(req, res){
   context.ContactEmail = req.body.ContactEmail;
   context.Username = req.body.Username;
   context.Password = req.body.Password;
-  pool.query("INSERT INTO "+ admin_request + " (name, email, username, password) VALUES (?, ?, ?, ?)",
+  pool.query("INSERT INTO "+ admin_table + " (name, email, username, password, isApproved) VALUES (?, ?, ?, ?, 0)",
    [req.body.ContactName, req.body.ContactEmail, req.body.Username, req.body.Password], function(err, result){
     if(err){
       error = err;
