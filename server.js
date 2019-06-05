@@ -111,27 +111,29 @@ app.post('/AdminSignIn', function(req, res){
 
   context.Username = req.body.Username;
   context.Password = req.body.Password;
+  console.log("username: ", context.Username);
+  console.log("password: ", context.Password);
   pool.query("SELECT * FROM "+ admin_table + " WHERE username = ? AND password = ?",
    [req.body.Username, req.body.Password], function(err, result){
 error = err;
 console.log(error);
 if (result == undefined || result.length != 1){
-error = {error: "number of rows was not 1" }
+error = {error: "number of rows was not 1 " + result.length }
 
 }else{
 
 req.session.user = { "username": result[0].username, "type":"admin" };
 }
-console.log(error);
   });
-  if(error != {}){
+console.log("error before check", error);
+  if(Object.keys(error).length == 0){
+
+    req.flash('success', 'Logged In')
+        res.render('home', context);
+  }else{
 
     req.flash('danger', 'No user with that password was found')
        res.render('adminsignin', context);
-  }else{
-
-    req.flash('success', 'Logged In')
-        res.render('/home', context);
   }
 });
 app.get('/AdminSignIn', function(req, res){
