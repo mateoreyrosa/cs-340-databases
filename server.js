@@ -218,20 +218,22 @@ res.redirect('/UserSignIn');
 
 });
 app.get('/home',function(req,res){
-  if (req.session.user && req.cookies.user_sid) {
-    pool.query("SELECT * FROM "+ bets_table + " ", function(err, result){
+
+
+  console.log(req.session.user);
+    pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+ bets_table + " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id", function(err, result){
       if(err){
         console.log(err);
-          res.redirect('/home');
+        console.log({result:result});
+          res.redirect('/UserSignIn');
       }else{
         console.log(result.length);
-      res.render('AdminHome', {result:result});
+        console.log({result:result})
+      res.render('home', {result:result});
       }
     });
-         res.render('home');
-    } else {
-    res.redirect('/UserSignIn');
-    }
+
+
 
 });
 app.get('/logout', (req, res) => {
@@ -391,18 +393,7 @@ app.get('/About',function(req,res){
  res.render('about');
 });
 
-app.get('/Store',function(req,res){
 
- res.render('store');
-});
-//downlaod
-app.get('/CustomOrderInstructions', function(req, res){
-
-  var file = 'CustomOrderInstructions.txt';
-   res.download(file);
-
-
-});
 
 app.use(function(req,res){
   res.status(404);

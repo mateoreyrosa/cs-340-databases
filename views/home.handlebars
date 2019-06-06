@@ -43,14 +43,18 @@
                                         <form class="needs-validation" action="/PlaceBet" method="post" novalidate>
                                           <input type="number" class="invisible" id="betid" name="betid" value="{{betid}}">
                                             <input type="text" class="invisible" id="username" name="username" value={{username}}>
+
                                           <div class="form-group">
-                                            <label for="Team1">Team 1</label>
-                                            <input type="text" class="form-control" id="Team1" name="Team1" placeholder="Team 1" required>
+                                            <input type="radio" name="teamSelect" value="{{team1}}"> Male<br>
+                                            <input type="radio" name="teamSelect" value="{{team2}}"> Female<br>
+                                          </div>
+                                          <div class="form-group">
+                                            <label for="BetAmount">Bet Amount</label>
+                                            <input type="number" class="form-control" id="BetAmount" name="BetAmount" placeholder="BetAmount" required>
                                             <div class="invalid-feedback">
                                                 Please provide a Team 1.
                                               </div>
                                           </div>
-
                                       </div>
                                       <div class="modal-footer">
                                           <button class="btn btn-secondary" type="submit" class="btn btn-primary">Place</button>
