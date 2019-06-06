@@ -41,11 +41,10 @@ app.use(express.static('Pictures'));
 app.use(express.static('CSS'));
 app.use(cookieParser());
 app.set('view engine', 'handlebars');
-app.set('port', 3881);
+app.set('port', 3882);
 /*Table names*/
 var admin_table = "Admins";
 var user_table = "Users";
-var admin_request = "shrimp";
 var contact_table = "Contacts";
 var bets_table = "Bets";
 var playsin_table = "PlaysIn";
@@ -129,7 +128,7 @@ console.log("error before check", error);
   if(Object.keys(error).length == 0){
 
     req.flash('success', 'Logged In')
-        res.render('home', context);
+        res.render('AdminHome', context);
   }else{
 
     req.flash('danger', 'No user with that password was found')
@@ -262,12 +261,53 @@ app.get('/ContactUs',function(req,res){
 });
 
 
-app.post('/approveSingleAdmin',function(req,res){
- res.render('pendingAdminRequests');
+  app.get('/AdminHome',function(req,res){
+
+  pool.query("SELECT * FROM "+ admin_table + " WHERE isApproved = 0 ", function(err, result){
+    if(err){
+      console.log(err);
+        res.redirect('/home');
+    }else{
+      console.log(result.length);
+    res.render('AdminHome', {result:result});
+    }
+  });
+  });
+
+app.get('/approveSingleAdmin/:username',function(req,res){
+console.log(req.params.username);
+  pool.query("UPDATE "+ admin_table + " SET isApproved = 1 WHERE USERNAME = ? ", [req.params.username], function(err, result){
+    if(err){
+      console.log(result);
+      console.log(err);
+        res.redirect('/AdminHome');
+    }else{
+            console.log(result);
+      console.log(result.length);
+  res.redirect('/AdminHome');
+    }
+  });
 });
-app.get('/PendingAdminRequests',function(req,res){
- res.render('pendingAdminRequests');
+
+  app.get('/deleteAdminRequest/:username',function(req,res){
+  console.log(req.params.username);
+    pool.query("DELETE FROM "+ admin_table + " WHERE USERNAME = ? ", [req.params.username], function(err, result){
+      if(err){
+        console.log(result);
+        console.log(err);
+          res.redirect('/AdminHome');
+      }else{
+              console.log(result);
+        console.log(result.length);
+
+      }
+    });
+
+
+
+ res.redirect('/AdminHome');
 });
+
 
 app.post('/saveBetDraft', function(req, res){
 
