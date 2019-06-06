@@ -1,13 +1,84 @@
+<div class="container">
+<h1 style="font-weight: bold; color: white;">Admin Account Home</h1>
+<div class ="divider"></div>
+<div class="feature_divider"></div>
 
-<div class="container" id="signinPage">
-  <div>Home page</div>
+<h1 style="font-weight: bold; color: white; font-size:20px;">Admin Requests</h1>
+<section class="wrapper" style="border-box:none !important;">
+    <!-- Row title -->
+    <main class="row-req title-req">
+      <ul>
+        <li>Team 1</li>
+        <li>Team 2</li>
+        <li>Odds 1</li>
+        <li>Odds 2</li>
+        <li>Payout 1</li>
+        <li>Payout 2</li>
+        <li></li>
+      </ul>
+    </main>
+
+{{#each result}}
+<section class="row-fadeIn-wrapper">
+     <article class="row-req fadeIn nfl">
+       <ul>
+         <div class="hidden">{{betid}}</div>
+         <li>{{team1}}</li>
+         <li style="margin-right:5px;">{{team2}}</li>
+            <li style="margin-right:5px;">{{team1odds}}</li>
+               <li style="margin-right:5px;">{{team2odds}}</li>
+                  <li style="margin-right:5px;">{{team1payout}}</li>
+                    <li style="margin-right:5px;">{{team2payout}}</li>
+          <button data-toggle="modal" data-target="#myModal{{betid}}" type="button" class="btn btn-large btn-info">Create Bet</button>
+            <div class="modal fade" id="myModal{{betid}}" role="dialog">
+                              <div class="modal-dialog">
+
+                                  <!-- Modal content-->
+                                  <div class="modal-content">
+                                      <div class="modal-header">
+                                          <h4 class="modal-title">Place Bet for {{team1}} vs. {{team2}}</h4>
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form class="needs-validation" action="/PlaceBet" method="post" novalidate>
+                                          <input type="number" class="invisible" id="betid" name="betid" value="{{betid}}">
+                                            <input type="text" class="invisible" id="username" name="username" value={{username}}>
+                                          <div class="form-group">
+                                            <label for="Team1">Team 1</label>
+                                            <input type="text" class="form-control" id="Team1" name="Team1" placeholder="Team 1" required>
+                                            <div class="invalid-feedback">
+                                                Please provide a Team 1.
+                                              </div>
+                                          </div>
+
+                                      </div>
+                                      <div class="modal-footer">
+                                          <button class="btn btn-secondary" type="submit" class="btn btn-primary">Place</button>
+                                      </div>
+                                      </form>
+                                  </div>
+
+                              </div>
+                          </div>
+       </ul>
+       <ul class="more-content">
+      <li></li>
+       </ul>
+     </article>
+   </section>
+{{/each}}
+  </section>
+  <div class ="divider"></div>
+
+
 </div>
+<style>.wrapper * {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
 
-
-
-<script>
-
-document.addEventListener("DOMContentLoaded", function(event) {
-
- });
-</script>
+body {
+  background: rgba(0, 0, 0, 0.9);
+}
+</style>

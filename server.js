@@ -68,6 +68,7 @@ app.use(session({
 }));
 var sessionChecker = (req, res, next) => {
     if (req.session.user && req.cookies.user_sid) {
+
         res.redirect('/home');
     } else {
         next();
@@ -218,6 +219,15 @@ res.redirect('/UserSignIn');
 });
 app.get('/home',function(req,res){
   if (req.session.user && req.cookies.user_sid) {
+    pool.query("SELECT * FROM "+ bets_table + " ", function(err, result){
+      if(err){
+        console.log(err);
+          res.redirect('/home');
+      }else{
+        console.log(result.length);
+      res.render('AdminHome', {result:result});
+      }
+    });
          res.render('home');
     } else {
     res.redirect('/UserSignIn');
