@@ -90,7 +90,7 @@ app.post('/AdminSignUp', function(req, res){
     }
 
   });
-  if(error != {}){
+  if(Object.keys(error).length){
 
     req.flash('danger', 'Your sign up request failed. Please try again.')
        res.render('adminsignup', context);
@@ -157,7 +157,7 @@ app.post('/UserSignUp', function(req, res){
     }
 
   });
-  if(error != {}){
+  if(Object.keys(error).length){
 
     req.flash('danger', 'Your sign up failed. Please try again.')
        res.render('usersignup', context);
