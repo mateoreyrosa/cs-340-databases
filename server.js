@@ -47,8 +47,7 @@ var admin_table = "Admins";
 var user_table = "Users";
 var contact_table = "Contacts";
 var bets_table = "Bets";
-var playsin_table = "PlaysIn";
-var games_table = "Games";
+var placed_table = "PlacedBets";
 var team_table = "Team";
 
 app.use(flash());
@@ -357,7 +356,7 @@ console.log(result);
     console.log(result);
   });
 
-  pool.query("INSERT INTO "+ bets_table + " VALUES ((SELECT teamid FROM Team WHERE teamName = ?), (SELECT teamid FROM Team WHERE teamName = ?), ?, ?, ?, ?)",
+  pool.query("INSERT INTO "+ bets_table + " (team1id, team2id, team1odds, team2odds, team1payout, team2payout) VALUES ((SELECT teamid FROM Team WHERE teamName = ?), (SELECT teamid FROM Team WHERE teamName = ?), ?, ?, ?, ?)",
    [req.body.Team1, req.body.Team2, req.body.Odds1, req.body.Odds2, req.body.Payout1, req.body.Payout2], function(err, result){
        console.log(pool.query.sql);
     if(err){
