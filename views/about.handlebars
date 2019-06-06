@@ -3,36 +3,37 @@
 <h1 style="font-weight: bold;">About Us</h1>
 <div class ="divider"></div>
 <div class="feature_divider"></div>
-<p>TL Bowls was created to satisfy a need for hand-crafted beauty in the
-  Pacific Northwest. One late night many years ago, a handsaw and wood from a nearby
-  forest met in Salem, Oregon. The result was an ambition to conceive art using materials
-  that encompassed the environment that survives the PNW today. The passion to draw from the
-  natural world drives the artistic genius that is the simplicity of our design.
+<p>Nymph Bets was created as a way to allow sports enthusiasts to put there wits to the the test while
+  making money. At Nymph, we strive to provide real time updates so that our users can always place bets.
 </p>
 <div class="feature_divider"></div>
 <h1 style="font-weight: bold;">Locations</h1>
 <div class ="divider"></div>
 <div class="feature_divider"></div>
-<p>TL Bowls's operations are run from Salem, Oregon, an ideal location for woodcraft.</p>
+<p>We are run from Puerto Rico, where our team of admins manages the site. </p>
 <div id="map" style="width:100%;height:600px;"></div>
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js" async defer></script>
+
   <script>
   function initMap() {
-    var myLatLng = {lat: 44.94, lng: -123.0351};
+    var myLatLng = {lat: 18.2, lng: -66.59};
 
        var map = new google.maps.Map(document.getElementById('map'), {
          zoom: 7,
-         center: myLatLng
+         center: myLatLng,
+         key: 'AIzaSyBJXvZUezUeYEe7PeIEpi0RRO3NUKw6oTY',
        });
 
        var marker = new google.maps.Marker({
          position: myLatLng,
          map: map,
-         title: 'TLBowls Hq'
+         title: 'Nymph Hq',
+         key: 'AIzaSyBJXvZUezUeYEe7PeIEpi0RRO3NUKw6oTY',
        });
   }
-  
+
   </script>
-  <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBJXvZUezUeYEe7PeIEpi0RRO3NUKw6oTY&callback=initMap">
+  </script>
