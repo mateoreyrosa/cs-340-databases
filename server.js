@@ -190,16 +190,16 @@ error = {error: "number of rows was not 1" }
 
 req.session.user = { "username": result[0].username, "type":"user" };
 }
-console.log(error);
   });
-  if(error != {}){
+  console.log(error);
+  if(Object.keys(error).length == 0){
+
+    req.flash('success', 'Logged In')
+        res.render('home', context);
+  }else{
 
     req.flash('danger', 'No user with that password was found')
        res.render('usersignin', context);
-  }else{
-
-    req.flash('success', 'Logged In')
-        res.render('/home', context);
   }
 });
 app.get('/AdminSignIn', function(req, res){
