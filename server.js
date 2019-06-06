@@ -49,6 +49,7 @@ var contact_table = "Contacts";
 var bets_table = "Bets";
 var playsin_table = "PlaysIn";
 var games_table = "Games";
+var team_table = "Team";
 
 app.use(flash());
 app.use((req, res, next) => {
@@ -89,7 +90,7 @@ app.post('/AdminSignUp', function(req, res){
     }
 
   });
-  if(error != {}){
+  if(Object.keys(error).length == 0){
 
     req.flash('danger', 'Your sign up request failed. Please try again.')
        res.render('adminsignup', context);
@@ -156,7 +157,7 @@ app.post('/UserSignUp', function(req, res){
     }
 
   });
-  if(error != {}){
+  if(Object.keys(error).length == 0){
 
     req.flash('danger', 'Your sign up failed. Please try again.')
        res.render('usersignup', context);
@@ -243,7 +244,7 @@ app.post('/ContactUs', function(req, res){
     }
 
   });
-  if(error != {}){
+  if(Object.keys(error).length == 0){
 
     req.flash('success', 'An error occured, please try again.')
        res.render('contactus', context);
@@ -313,11 +314,65 @@ app.post('/saveBetDraft', function(req, res){
 
 });
 app.post('/CreateBet',function(req,res){
- res.render('createBet');
+
+  var error =  {};
+  var context = {};
+  context.team1 = req.body.Team1;
+  context.team2 = req.body.Team2;
+  context.payout1 = req.body.Payout1;
+  context.payout2 = req.body.Payout2;
+  context.odds1 = req.body.Odds1;
+  context.odds2 = req.body.Odds2;
+  console.log(req.body);
+  pool.query("INSERT INTO "+ team_table + " (teamName) SELECT * FROM (SELECT ?) as tmp  WHERE NOT EXISTS (SELECT teamName FROM " + team_table + " WHERE teamName = ? ) LIMIT 1",
+   [req.body.Team1, req.body.Team1], function(err, result){
+    if(err){
+      error = err;
+      console.log(error);
+
+    }
+console.log(result);
+  });
+
+  pool.query("INSERT INTO "+ team_table + " (teamName) SELECT * FROM (SELECT ?) as tmp  WHERE NOT EXISTS (SELECT teamName FROM " + team_table + " WHERE teamName = ? ) LIMIT 1",
+   [req.body.Team2, req.body.Team2], function(err, result){
+    if(err){
+      error = err;
+      console.log(error);
+
+    }
+console.log(result);
+  });
+
+  pool.query("SELECT * FROM Bets",
+    function(err, result, fields){
+    if(err){
+      error = err;
+
+    }
+    console.log(result);
+  });
+
+  pool.query("INSERT INTO "+ bets_table + " VALUES ((SELECT teamid FROM Team WHERE teamName = ?), (SELECT teamid FROM Team WHERE teamName = ?), ?, ?, ?, ?)",
+   [req.body.Team1, req.body.Team2, req.body.Odds1, req.body.Odds2, req.body.Payout1, req.body.Payout2], function(err, result){
+       console.log(pool.query.sql);
+    if(err){
+      error = err;
+      console.log(error);
+    }
+
+  });
+  if(Object.keys(error).length == 0){
+
+
+        res.redirect('/AdminHome');
+  }else{
+
+    req.flash('success', 'Thank you ' + context.inputName + '! Please Sign in. ')
+          res.redirect('/AdminHome');
+  }
 });
-app.get('/CreateBet',function(req,res){
- res.render('createBet');
-});
+
 
 app.get('/About',function(req,res){
  res.render('about');

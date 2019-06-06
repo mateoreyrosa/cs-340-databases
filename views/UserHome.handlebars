@@ -1,0 +1,47 @@
+<div class="container">
+<h1 style="font-weight: bold; color: white;">Admin Account Home</h1>
+<div class ="divider"></div>
+<div class="feature_divider"></div>
+
+<h1 style="font-weight: bold; color: white; font-size:20px;">Admin Requests</h1>
+<section class="wrapper" style="border-box:none !important;">
+    <!-- Row title -->
+    <main class="row-req title-req">
+      <ul>
+        <li>Name</li>
+        <li>Username</li>
+        <li></li>
+        <li></li>
+      </ul>
+    </main>
+
+{{#each result}}
+<section class="row-fadeIn-wrapper">
+     <article class="row-req fadeIn nfl">
+       <ul>
+         <li>{{name}}</li>
+
+
+         <li style="margin-right:5px;">{{username}}</li>
+            <li><a href="/approveSingleAdmin/{{username}}">Approve</a></li>
+         <li><a href="/deleteAdminRequest/{{username}}">Delete</a></li>
+       </ul>
+       <ul class="more-content">
+         <li>{{email}}</li>
+       </ul>
+     </article>
+   </section>
+{{/each}}
+  </section>
+
+</div>
+<style>.wrapper * {
+  -webkit-box-sizing: content-box;
+     -moz-box-sizing: content-box;
+          box-sizing: content-box;
+}
+
+body {
+  background: rgba(0, 0, 0, 0.9);
+}
+</style>
