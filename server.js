@@ -41,7 +41,7 @@ app.use(express.static('Pictures'));
 app.use(express.static('CSS'));
 app.use(cookieParser());
 app.set('view engine', 'handlebars');
-app.set('port', 3882);
+app.set('port', 3883);
 /*Table names*/
 var admin_table = "Admins";
 var user_table = "Users";
@@ -69,7 +69,7 @@ app.use(session({
 var sessionChecker = (req, res, next) => {
     if (req.session.user && req.cookies.user_sid) {
 
-        res.redirect('/home');
+        res.redirect('/UserSignIn');
     } else {
         next();
     }
@@ -209,7 +209,7 @@ console.log(req.session.user);
   if(Object.keys(error).length == 0){
 
     req.flash('success', 'Logged In')
-        res.render('home', context);
+        res.redirect('/UserHome');
   }else{
 
     req.flash('danger', 'No user with that password was found')
@@ -230,14 +230,12 @@ res.redirect('/UserSignIn');
 
 
 app.get('/UserHome',function(req,res){
-  console.log(req.session.user);
-    console.log(req.cookies.user_sid);
-if (req.session.user && req.cookies.user_sid && req.session.user.type == "user") {
-  console.log(req.session.user.username);
-    pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
+
+
+    pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
      bets_table +
      " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
-      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
+      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", ['meeeto'], function(err, result){
       if(err){
         console.log(err);
         console.log({result:result});
@@ -248,10 +246,7 @@ if (req.session.user && req.cookies.user_sid && req.session.user.type == "user")
       res.render('UserHome', {result:result});
       }
     });
-}else{
-res.redirect('/UserSignIn');
 
-}
 
 
 });
@@ -259,11 +254,10 @@ res.redirect('/UserSignIn');
 
 
 
-app.get('/home',function(req,res){
+app.get('/home', function(req,res){
+
+
   console.log(req.session.user);
-    console.log(req.cookies.user_sid);
-if (req.session.user && req.cookies.user_sid) {
-  console.log(req.session.user.username);
     pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+ bets_table + " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id", function(err, result){
       if(err){
         console.log(err);
@@ -275,10 +269,7 @@ if (req.session.user && req.cookies.user_sid) {
       res.render('home', {result:result});
       }
     });
-}else{
-res.redirect('/UserSignIn');
 
-}
 
 
 });

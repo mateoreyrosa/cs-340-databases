@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon server.js",
     "dev": "nodemon server.js",
-    "forever-start": "forever start --append --uid bet-site server.js",
+    "forever-start": "./node_modules/forever/bin/forever start --append --uid bet-site server.js",
     "forever-list": "forever list",
     "forever-stop": "forever stop bet-site"
   },
@@ -26,6 +26,7 @@
     "express-flash": "0.0.2",
     "express-handlebars": "^2.0.1",
     "express-session": "^1.11.3",
+    "forever": "^1.0.0",
     "handlebars": "^4.1.2",
     "jquery": "^3.4.1",
     "morgan": "^1.9.1",
