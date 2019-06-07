@@ -1,17 +1,20 @@
 <div class="container">
-<h1 style="font-weight: bold; color: white;">Admin Account Home</h1>
+<h1 style="font-weight: bold; color: white;">User Home Page</h1>
 <div class ="divider"></div>
 <div class="feature_divider"></div>
 
-<h1 style="font-weight: bold; color: white; font-size:20px;">Admin Requests</h1>
+<h1 style="font-weight: bold; color: white; font-size:20px;">My Bets</h1>
 <section class="wrapper" style="border-box:none !important;">
     <!-- Row title -->
     <main class="row-req title-req">
       <ul>
-        <li>Name</li>
-        <li>Username</li>
-        <li></li>
-        <li></li>
+        <li>Team 1</li>
+        <li>Team 2</li>
+        <li>Odds 1</li>
+        <li>Odds 2</li>
+        <li>Payout 1</li>
+        <li>Payout 2</li>
+        <li>Amount Bet</li>
       </ul>
     </main>
 
@@ -19,15 +22,16 @@
 <section class="row-fadeIn-wrapper">
      <article class="row-req fadeIn nfl">
        <ul>
-         <li>{{name}}</li>
-
-
-         <li style="margin-right:5px;">{{username}}</li>
-            <li><a href="/approveSingleAdmin/{{username}}">Approve</a></li>
-         <li><a href="/deleteAdminRequest/{{username}}">Delete</a></li>
+         <li>{{team1}}</li>
+         <li style="margin-right:5px;">{{team2}}</li>
+            <li style="margin-right:5px;">{{team1odds}}</li>
+               <li style="margin-right:5px;">{{team2odds}}</li>
+                  <li style="margin-right:5px;">{{team1payout}}</li>
+                    <li style="margin-right:5px;">{{team2payout}}</li>
+                      <li style="margin-right:5px;">{{amountBet}}</li>
        </ul>
        <ul class="more-content">
-         <li>{{email}}</li>
+         <li></li>
        </ul>
      </article>
    </section>

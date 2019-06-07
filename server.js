@@ -227,6 +227,38 @@ app.get('/', function(req, res){
 res.redirect('/UserSignIn');
 
 });
+
+
+app.get('/UserHome',function(req,res){
+  console.log(req.session.user);
+    console.log(req.cookies.user_sid);
+if (req.session.user && req.cookies.user_sid && req.session.user.type == "user") {
+  console.log(req.session.user.username);
+    pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
+     bets_table +
+     " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
+      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
+      if(err){
+        console.log(err);
+        console.log({result:result});
+          res.redirect('/UserSignIn');
+      }else{
+        console.log(result.length);
+        console.log({result:result})
+      res.render('UserHome', {result:result});
+      }
+    });
+}else{
+res.redirect('/UserSignIn');
+
+}
+
+
+});
+
+
+
+
 app.get('/home',function(req,res){
   console.log(req.session.user);
     console.log(req.cookies.user_sid);
