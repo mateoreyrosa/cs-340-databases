@@ -18,7 +18,7 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        expires: 600
+        expires: 600000
     }
 }));
   var mysql = require('mysql');
@@ -117,14 +117,19 @@ app.post('/AdminSignIn', function(req, res){
   console.log("password: ", context.Password);
   pool.query("SELECT * FROM "+ admin_table + " WHERE username = ? AND password = ?",
    [req.body.Username, req.body.Password], function(err, result){
-error = err;
-console.log(error);
+     if(err){
+
+       error = err;
+       console.log(error);
+     }
+
 if (result == undefined || result.length != 1){
 error = {error: "number of rows was not 1 " + result.length }
 
 }else{
 
 req.session.user = { "username": result[0].username, "type":"admin" };
+console.log(req.session.user);
 }
   });
 console.log("error before check", error);
@@ -185,14 +190,19 @@ app.post('/UserSignIn', function(req, res){
   context.Password = req.body.inputPassword;
   pool.query("SELECT * FROM "+ user_table + " WHERE username = ? AND password = ?" ,
    [req.body.inputUsername, req.body.inputPassword], function(err, result){
-error = err;
-console.log(error);
+     if(err){
+       error = err;
+       console.log(error);
+
+     }
+
 if (result == undefined || result.length != 1){
 error = {error: "number of rows was not 1" }
 
 }else{
 
 req.session.user = { "username": result[0].username, "type":"user" };
+console.log(req.session.user);
 }
   });
   console.log(error);
@@ -218,9 +228,10 @@ res.redirect('/UserSignIn');
 
 });
 app.get('/home',function(req,res){
-
-
   console.log(req.session.user);
+    console.log(req.cookies.user_sid);
+if (req.session.user && req.cookies.user_sid) {
+  console.log(req.session.user.username);
     pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+ bets_table + " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id", function(err, result){
       if(err){
         console.log(err);
@@ -232,7 +243,10 @@ app.get('/home',function(req,res){
       res.render('home', {result:result});
       }
     });
+}else{
+res.redirect('/UserSignIn');
 
+}
 
 
 });
@@ -243,6 +257,35 @@ app.get('/logout', (req, res) => {
     } else {
         res.redirect('/UserSignIn');
     }
+});
+
+
+app.post('/PlaceBet', function(req, res){
+  var error = {};
+  var context = {};
+  context.betid = req.body.betid;
+  context.username = req.body.username;
+  context.betamount = req.body.betamount;
+  if (req.session.user && req.cookies.user_sid) {
+  pool.query("INSERT INTO "+ placed_table + " (betid, username, betamount) VALUES (?, ?, ?)",
+   [req.body.betid, req.session.user.username, req.body.betamount], function(err, result){
+    if(err){
+      error = err;
+      console.log(error);
+    }
+
+  });
+  if(Object.keys(error).length){
+
+    req.flash('success', 'An error occured, please try again.')
+       res.redirect('/home');
+  }else{
+
+
+        res.redirect('/home');
+  }}else{res.redirect('/UserSignIn');}
+
+
 });
 
 app.post('/ContactUs', function(req, res){
