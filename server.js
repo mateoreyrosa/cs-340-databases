@@ -202,6 +202,7 @@ error = {error: "number of rows was not 1" }
 }else{
 
 req.session.user = { "username": result[0].username, "type":"user" };
+req.session.save();
 console.log(req.session.user);
 }
   });
@@ -220,6 +221,9 @@ app.get('/AdminSignIn', function(req, res){
 res.render('adminsignin');
 });
 app.get('/UserSignIn', function(req, res){
+    if (req.session.user) {
+        console.log(req.session.user);
+    }
 res.render('usersignin');
 });
 
@@ -232,10 +236,16 @@ res.redirect('/UserSignIn');
 app.get('/UserHome',function(req,res){
 
 
+    if (!req.session.user) {
+      console.log("No username defined in this session");
+      console.log(req.session);
+      res.redirect('/UserSignIn');
+      res.end();
+    }
     pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
      bets_table +
      " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
-      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", ['meeeto'], function(err, result){
+      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
       if(err){
         console.log(err);
         console.log({result:result});
