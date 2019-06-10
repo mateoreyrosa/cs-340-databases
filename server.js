@@ -257,7 +257,7 @@ app.get('/UserHome',function(req,res){
       }
 
     });
-    pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
+    pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout, pt.amountBet FROM "+
      bets_table +
      " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
       + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
