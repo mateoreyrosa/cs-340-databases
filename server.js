@@ -130,13 +130,15 @@ error = {error: "number of rows was not 1 " + result.length }
 
 req.session.user = { "username": result[0].username, "type":"admin" };
 console.log(req.session.user);
+req.session.save();
 }
   });
 console.log("error before check", error);
   if(Object.keys(error).length == 0){
 
     req.flash('success', 'Logged In')
-        res.render('AdminHome', context);
+        res.redirect('/AdminHome');
+        //res.render('AdminHome', context);
   }else{
 
     req.flash('danger', 'No user with that password was found')
@@ -361,6 +363,7 @@ app.get('/ContactUs',function(req,res){
         res.redirect('/home');
     }else{
       console.log(result.length);
+      console.log(result);
     res.render('AdminHome', {result:result});
     }
   });
