@@ -2,7 +2,17 @@
 <h1 style="font-weight: bold; color: white;">Home</h1>
 <div class ="divider"></div>
 <div class="feature_divider"></div>
-
+<form class="needs-validation" action="/Search" method="post" novalidate>
+<div class="input-group col-sm-12">
+      <input class="form-control py-2" type="search" name="search" value="{{search}}" id="search-input">
+      <span class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button">
+            <i class="fa fa-search"></i>
+        </button>
+      </span>
+</div>
+</form>
+<div class="feature_divider" style="padding:15px;"></div>
 <h1 style="font-weight: bold; color: white; font-size:20px;">Open Bets</h1>
 <section class="wrapper" style="border-box:none !important;">
     <!-- Row title -->
@@ -62,7 +72,7 @@
                                 </div>
                                 <div class="form-group">
                                   <label for="BetAmount">Bet Amount</label>
-                                  <input type="number" class="form-control" id="BetAmount" name="BetAmount" placeholder="BetAmount" required>
+                                  <input type="number" class="form-control" id="BetAmount" name="BetAmount" placeholder="Bet Amount" required>
                                   <div class="invalid-feedback">
                                       Please provide a Team 1.
                                     </div>

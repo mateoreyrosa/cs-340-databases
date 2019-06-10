@@ -25,9 +25,9 @@ app.use(session({
   var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'classmysql.engr.oregonstate.edu',
-    user            : 'cs340_yorkar',
-    password        : '7281',
-    database        : 'cs340_yorkar',
+    user            : 'cs340_reyrosam',
+    password        : '6249',
+    database        : 'cs340_reyrosam',
     "dateStrings": true
   });
 // prepare server
@@ -41,7 +41,7 @@ app.use(express.static('Pictures'));
 app.use(express.static('CSS'));
 app.use(cookieParser());
 app.set('view engine', 'handlebars');
-app.set('port', 3883);
+app.set('port', 3882);
 /*Table names*/
 var admin_table = "Admins";
 var user_table = "Users";
@@ -129,8 +129,8 @@ error = {error: "number of rows was not 1 " + result.length }
 }else{
 
 req.session.user = { "username": result[0].username, "type":"admin" };
-console.log(req.session.user);
 req.session.save();
+console.log(req.session.user);
 }
   });
 console.log("error before check", error);
@@ -138,13 +138,13 @@ console.log("error before check", error);
 
     req.flash('success', 'Logged In')
         res.redirect('/AdminHome');
-        //res.render('AdminHome', context);
   }else{
 
     req.flash('danger', 'No user with that password was found')
        res.render('adminsignin', context);
   }
 });
+
 app.get('/AdminSignIn', function(req, res){
 res.render('adminsignin');
 });
@@ -205,6 +205,7 @@ error = {error: "number of rows was not 1" }
 
 req.session.user = { "username": result[0].username, "type":"user" };
 req.session.save();
+console.log("Inside User singn in post after save")
 console.log(req.session.user);
 }
   });
@@ -216,7 +217,7 @@ console.log(req.session.user);
   }else{
 
     req.flash('danger', 'No user with that password was found')
-       res.render('usersignin', context);
+       res.redirect('/UserSignIn');
   }
 });
 app.get('/AdminSignIn', function(req, res){
@@ -238,28 +239,43 @@ res.redirect('/UserSignIn');
 app.get('/UserHome',function(req,res){
 
 
-    if (!req.session.hasOwnProperty('user') || !(req.session.user.type === "user")) {
+    if (!req.session.user) {
       console.log("No username defined in this session");
       console.log(req.session);
+
       res.redirect('/UserSignIn');
-      res.end();
-    } else {
-      pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
-          bets_table +
-          " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
-          + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
+
+    }
+      var totalBets = 0;
+    pool.query("SELECT totalBets FROM " + user_table + " WHERE username = ?", [req.session.user.username], function(err, result){
+      if(!err){
+        totalBets = result[0].totalBets;
+        console.log(result[0].totalBets);
+
+      }else{
+        console.log(err);
+      }
+
+    });
+    pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
+     bets_table +
+     " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
+      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
       if(err){
         console.log(err);
         console.log({result:result});
           res.redirect('/UserSignIn');
       }else{
+
+
+        console.log("Total Bets: " + totalBets);
         console.log(result.length);
         console.log({result:result})
-      res.render('UserHome', {result:result});
+      res.render('UserHome', {result:result, totalBet: totalBets});
       }
-      });
+    });
 
-    }
+
 
 });
 
@@ -300,10 +316,11 @@ app.post('/PlaceBet', function(req, res){
   var context = {};
   context.betid = req.body.betid;
   context.username = req.body.username;
-  context.betamount = req.body.betamount;
-  if (req.session.user && req.cookies.user_sid) {
-  pool.query("INSERT INTO "+ placed_table + " (betid, username, betamount) VALUES (?, ?, ?)",
-   [req.body.betid, req.session.user.username, req.body.betamount], function(err, result){
+  context.betamount = req.body.BetAmount;
+  if (req.session.user && req.cookies.user_sid && req.session.user.type != 'undefined' && req.session.user.type == 'user' ) {
+    console.log(req.session.user.username);
+  pool.query("INSERT INTO "+ placed_table + " (betid, username, amountBet) VALUES (?, ?, ?)",
+   [req.body.betid, req.session.user.username, req.body.BetAmount], function(err, result){
     if(err){
       error = err;
       console.log(error);
@@ -355,28 +372,19 @@ app.get('/ContactUs',function(req,res){
 });
 
 
-app.get('/AdminHome',function(req,res){
-
-  console.log(req.session);
-
-  if (!(req.session.hasOwnProperty('user')) || !(req.session.user.type == 'admin')) {
-    console.log("no user logged in or incorrect user logged in");
-    res.redirect("/AdminSignIn");
-    res.end();
-  } else {
-
-    pool.query("SELECT * FROM "+ admin_table + " WHERE isApproved = 0 ", function(err, result){
+  app.get('/AdminHome',function(req,res){
+if (req.session.user && req.cookies.user_sid && req.session.user.type != 'undefined' && req.session.user.type == 'admin' ) {
+  pool.query("SELECT * FROM "+ admin_table + " WHERE isApproved = 0 ", function(err, result){
     if(err){
       console.log(err);
-      res.redirect('/home');
+        res.redirect('/home');
     }else{
       console.log(result.length);
-      console.log(result);
-      res.render('AdminHome', {result:result});
+    res.render('AdminHome', {result:result});
     }
-    });
-  }
-});
+  });
+} else {res.redirect('/AdminSignIn');}
+  });
 
 app.get('/approveSingleAdmin/:username',function(req,res){
 console.log(req.params.username);
@@ -412,6 +420,22 @@ console.log(req.params.username);
  res.redirect('/AdminHome');
 });
 
+app.post('/Search', function(req, res){
+
+
+    console.log(req.session.user);
+      pool.query("SELECT betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+ bets_table + " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id where tm.teamname Like ? OR tm1.teamname Like ?", [req.body.search + '%', req.body.search + '%'], function(err, result){
+        if(err){
+          console.log(err);
+          console.log({result:result});
+            res.redirect('/UserSignIn');
+        }else{
+          console.log(result.length);
+          console.log({result:result})
+        res.render('home', {result:result, search:req.body.search});
+        }
+      });
+});
 
 app.post('/saveBetDraft', function(req, res){
 
@@ -446,7 +470,15 @@ console.log(result);
     }
 console.log(result);
   });
+  pool.query("DELETE FROM "+ team_table + ' WHERE teamName = ""',
+    function(err, result){
+    if(err){
+      error = err;
+      console.log(error);
 
+    }
+  console.log(result);
+  });
   pool.query("SELECT * FROM Bets",
     function(err, result, fields){
     if(err){
