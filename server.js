@@ -312,10 +312,13 @@ app.get('/logout', (req, res) => {
 
 
 app.post('/PlaceBet', function(req, res){
+  console.log(req.session);
   var error = {};
   var context = {};
   context.betid = req.body.betid;
   context.username = req.body.username;
+    context.betamount = req.body.betamount;
+
   context.betamount = req.body.BetAmount;
   if (req.session.user && req.cookies.user_sid && req.session.user.type != 'undefined' && req.session.user.type == 'user' ) {
     console.log(req.session.user.username);
