@@ -115,7 +115,7 @@ app.post('/AdminSignIn', function(req, res){
   context.Password = req.body.Password;
   console.log("username: ", context.Username);
   console.log("password: ", context.Password);
-  pool.query("SELECT * FROM "+ admin_table + " WHERE username = ? AND password = ?",
+  pool.query("SELECT * FROM "+ admin_table + " WHERE username = ? AND password = ? AND isApproved = 1",
    [req.body.Username, req.body.Password], function(err, result){
      if(err){
 
@@ -238,16 +238,16 @@ res.redirect('/UserSignIn');
 app.get('/UserHome',function(req,res){
 
 
-    if (!req.session.user) {
+    if (!req.session.hasOwnProperty('user') || !(req.session.user.type === "user")) {
       console.log("No username defined in this session");
       console.log(req.session);
       res.redirect('/UserSignIn');
       res.end();
-    }
-    pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
-     bets_table +
-     " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
-      + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
+    } else {
+      pool.query("SELECT Bets.betid, tm.teamname as team1, tm1.teamname as team2, team1odds, team2odds, team1payout, team2payout FROM "+
+          bets_table +
+          " INNER JOIN Team as tm ON tm.teamid = Bets.team1id inner join Team as tm1 ON tm1.teamid = Bets.team2id inner join "
+          + placed_table + " as pt ON pt.betid = Bets.betid where pt.username = ?", [req.session.user.username], function(err, result){
       if(err){
         console.log(err);
         console.log({result:result});
@@ -257,9 +257,9 @@ app.get('/UserHome',function(req,res){
         console.log({result:result})
       res.render('UserHome', {result:result});
       }
-    });
+      });
 
-
+    }
 
 });
 
@@ -355,19 +355,28 @@ app.get('/ContactUs',function(req,res){
 });
 
 
-  app.get('/AdminHome',function(req,res){
+app.get('/AdminHome',function(req,res){
 
-  pool.query("SELECT * FROM "+ admin_table + " WHERE isApproved = 0 ", function(err, result){
+  console.log(req.session);
+
+  if (!(req.session.hasOwnProperty('user')) || !(req.session.user.type == 'admin')) {
+    console.log("no user logged in or incorrect user logged in");
+    res.redirect("/AdminSignIn");
+    res.end();
+  } else {
+
+    pool.query("SELECT * FROM "+ admin_table + " WHERE isApproved = 0 ", function(err, result){
     if(err){
       console.log(err);
-        res.redirect('/home');
+      res.redirect('/home');
     }else{
       console.log(result.length);
       console.log(result);
-    res.render('AdminHome', {result:result});
+      res.render('AdminHome', {result:result});
     }
-  });
-  });
+    });
+  }
+});
 
 app.get('/approveSingleAdmin/:username',function(req,res){
 console.log(req.params.username);
