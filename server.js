@@ -296,14 +296,15 @@ app.get('/logout', (req, res) => {
 
 
 app.post('/PlaceBet', function(req, res){
+  console.log(req.session);
   var error = {};
   var context = {};
   context.betid = req.body.betid;
   context.username = req.body.username;
   context.betamount = req.body.betamount;
   if (req.session.user && req.cookies.user_sid) {
-  pool.query("INSERT INTO "+ placed_table + " (betid, username, betamount) VALUES (?, ?, ?)",
-   [req.body.betid, req.session.user.username, req.body.betamount], function(err, result){
+  pool.query("INSERT INTO "+ placed_table + " (betid, username, amountBet) VALUES (?, ?, ?)",
+   [req.body.betid, req.session.user.username, req.body.BetAmount], function(err, result){
     if(err){
       error = err;
       console.log(error);
